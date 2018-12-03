@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import paho.mqtt.client as mqtt
-import RPi.GPIO as GPIO
+import rpi.gpio as gpio
 import time
 import os
 import datetime
@@ -20,9 +20,9 @@ def on_message(client, userdata, message):
         msgReceived = str(message.payload.decode("utf-8"))
         
         if msgReceived == "ON":
-            GPIO.output(pin, GPIO.HIGH)
+            gpio.output(pin, GPIO.HIGH)
             time.sleep(1)
-            GPIO.output(pin, GPIO.LOW)
+            gpio.output(pin, GPIO.LOW)
             
             client.publish(commandTopic, "OFF", qos=1, retain=True)
 
