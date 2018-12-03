@@ -12,6 +12,9 @@ pin = int(os.getenv('pin', '17'))
 thingTopic = "jumajumo/" + thingid + "/"
 commandTopic = thingTopic + "command"
 
+def on_connect(client, userdata, flags, rc):
+    client.subscribe(commandTopic, qos=1)
+    
 def on_message(client, userdata, message):
     if message.topic == commandTopic:
         msgReceived = str(message.payload.decode("utf-8"))
@@ -26,6 +29,7 @@ def on_message(client, userdata, message):
 client = mqtt.Client(thingid)
 
 client.will_set(thingTopic, "undef", qos=1, retain=True)
+client.on_connect=on_connect
 client.on_message=on_message 
 
 client.connect(brokeraddr)
@@ -39,7 +43,6 @@ client.loop_start()
 try:
     while True:
 
-        client.subscribe(commandTopic, qos=1)
 except:
     client.loop_stop() #stop the loop
     client.disconnect()
