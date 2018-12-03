@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import paho.mqtt.client as mqtt
+import RPi.GPIO as GPIO
 import time
 import os
 import datetime
@@ -12,10 +13,15 @@ thingTopic = "jumajumo/" + thingid + "/"
 commandTopic = thingTopic + "command"
 
 def on_message(client, userdata, message):
-    print("message received " ,str(message.payload.decode("utf-8")))
-    print("message topic=",message.topic)
-    print("message qos=",message.qos)
-    print("message retain flag=",message.retain)
+    if message.topic == commandTopic:
+        msgReceived = str(message.payload.decode("utf-8"))
+        
+        if msgReceived == "ON":
+            GPIO.output(pin, GPIO.HIGH)
+            time.sleep(1)
+            GPIO.output(pin, GPIO.LOW)
+            
+            client.publish(commandTopic, "OFF", qos=1, retain=True)
 
 client = mqtt.Client(thingid)
 
