@@ -38,11 +38,4 @@ client.publish(thingTopic, str(datetime.datetime.now()), qos=1, retain=True)
 client.publish(thingTopic + "sys/type", "actor", qos=1, retain=True)
 client.publish(thingTopic + "sys/device", "relais-button", qos=1, retain=True)
 
-client.loop_start()
-
-try:
-    while True:
-
-except:
-    client.loop_stop() #stop the loop
-    client.disconnect()
+client.loop_forever()
