@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import paho.mqtt.client as mqtt
-import rpi.gpio as gpio
+import RPi._GPIO as gpio
 import time
 import os
 import datetime
@@ -16,15 +16,16 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe(commandTopic, qos=1)
     
 def on_message(client, userdata, message):
-    if message.topic == commandTopic:
-        msgReceived = str(message.payload.decode("utf-8"))
+
+   if str(message.topic) == str(commandTopic):
+      msgReceived = str(message.payload)
         
-        if msgReceived == "ON":
-            gpio.output(pin, GPIO.HIGH)
-            time.sleep(1)
-            gpio.output(pin, GPIO.LOW)
+      if str(message.payload) == str("ON"):
+         gpio.output(pin, 1)
+         time.sleep(1)
+         gpio.output(pin, 0)
             
-            client.publish(commandTopic, "OFF", qos=1, retain=True)
+         client.publish(commandTopic, "OFF", qos=1, retain=True)
 
 client = mqtt.Client(thingid)
 
