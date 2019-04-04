@@ -1,4 +1,4 @@
-# dht22-docker-arm
+# relais-button-docker-arm
 Docker to provide a relais-button-actor listening on a mqtt topic
 
 # build it 
