@@ -5,7 +5,7 @@ Docker to provide a relais-button-actor listening on a mqtt topic
 docker build --rm -t jumajumo/relais_button .
 
 # run it
-docker run -d --network="host" --privileged -e brokeraddr=192.168.0.150 -e thingid=rbGaragedoor -e pin=11 --name "jumajumo_relais_button" jumajumo/relais_button
+docker run -d --network="host" --privileged -e brokeraddr=192.168.0.150 -e thingid=rbGaragedoor -e pin=17 --name "jumajumo_relais_button" jumajumo/relais_button
 
 - --privileged: privileged is necessary in order to allow access to gpio
 - -e brokeraddr: ip address of the mqtt broker (default port 1883 is used) (default "openhabian")
