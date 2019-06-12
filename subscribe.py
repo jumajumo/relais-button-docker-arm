@@ -17,7 +17,6 @@ OFF=gpio.HIGH
 
 gpio.setmode(gpio.BCM)
 gpio.setup(pin,gpio.OUT)
-gpio.output(pin,OFF)
 
 def on_message(client, userdata, message):
 
@@ -27,7 +26,7 @@ def on_message(client, userdata, message):
          gpio.output(pin,ON)
          time.sleep(1)
          gpio.output(pin,OFF)
-         client.publish(commandTopic, "OFF")
+         client.publish(commandTopic, "OFF", qos=1, retain=True)
 
 client = mqtt.Client(thingid)
 
@@ -39,11 +38,11 @@ client.connect(brokeraddr)
 
 client.subscribe(commandTopic)
 
-client.publish(commandTopic, "ONLINE")
 client.publish(thingTopic, str(datetime.datetime.now()), qos=1, retain=True)
 client.publish(thingTopic + "sys/type", "actor", qos=1, retain=True)
 client.publish(thingTopic + "sys/device", "relais-button", qos=1, retain=True)
 client.publish(thingTopic + "sys/state", "ONLINE", qos=1, retain=True)
+client.publish(commandTopic, "OFF", qos=1, retain=True)
 
 client.loop_forever()
 
